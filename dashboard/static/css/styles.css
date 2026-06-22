@@ -682,9 +682,33 @@ h3 { font-size: 1.1rem; font-weight: 600; color: var(--text-primary); }
   word-break: break-word;
 }
 
-.lead-card-text--truncated::after {
-  content: "...";
-  color: var(--text-muted);
+.lead-card-text--collapsible {
+  transition: max-height 0.3s ease;
+}
+
+.lead-card-text--collapsed {
+  max-height: 4.8em;       /* ~3 lines at 1.6 line-height */
+  overflow: hidden;
+  position: relative;
+  -webkit-mask-image: linear-gradient(to bottom, #000 60%, transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 60%, transparent 100%);
+}
+
+.btn-expand {
+  display: inline-block;
+  margin-top: 6px;
+  padding: 2px 0;
+  background: none;
+  border: none;
+  color: var(--accent-blue);
+  font-family: 'Inter', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: color var(--transition-fast);
+}
+.btn-expand:hover {
+  color: #79c0ff;
 }
 
 .lead-card-divider {

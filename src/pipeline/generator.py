@@ -289,7 +289,9 @@ class ResponseGenerator:
                 config=types.GenerateContentConfig(
                     system_instruction=system_instruction,
                     temperature=0.7,         # Slightly creative for natural-sounding comments
-                    max_output_tokens=300,    # Generous ceiling, prompt constrains actual length
+                    max_output_tokens=2048,   # Must be generous — Gemini 2.5 Flash counts
+                                              # thinking tokens within this budget. 300 was
+                                              # exhausted by thinking alone, truncating output.
                 ),
             )
 

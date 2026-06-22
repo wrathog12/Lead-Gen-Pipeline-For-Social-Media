@@ -69,9 +69,12 @@
             <!-- Original Post -->
             <div class="lead-card-section">
                 <div class="lead-card-label">{{ config.post_label }}</div>
-                <div class="lead-card-text {% if lead.post_text|length > config.post_truncate %}lead-card-text--truncated{% endif %}">
-                    {{ lead.post_text[:config.post_truncate] }}
+                <div class="lead-card-text lead-card-text--collapsible {% if lead.post_text|length > 200 %}lead-card-text--collapsed{% endif %}" id="post-text-{{ lead.id }}">
+                    {{ lead.post_text }}
                 </div>
+                {% if lead.post_text|length > 200 %}
+                <button class="btn-expand" onclick="toggleExpand('post-text-{{ lead.id }}', this)">Show more ▼</button>
+                {% endif %}
             </div>
 
             <hr class="lead-card-divider">
@@ -79,9 +82,12 @@
             <!-- AI-Generated Response -->
             <div class="lead-card-section">
                 <div class="lead-card-label lead-card-label--ai">{{ config.response_label }}</div>
-                <div class="lead-card-text {% if lead.draft_text|length > config.response_truncate %}lead-card-text--truncated{% endif %}">
-                    {{ lead.draft_text[:config.response_truncate] }}
+                <div class="lead-card-text lead-card-text--collapsible {% if lead.draft_text|length > 200 %}lead-card-text--collapsed{% endif %}" id="draft-text-{{ lead.id }}">
+                    {{ lead.draft_text }}
                 </div>
+                {% if lead.draft_text|length > 200 %}
+                <button class="btn-expand" onclick="toggleExpand('draft-text-{{ lead.id }}', this)">Show more ▼</button>
+                {% endif %}
             </div>
 
             <!-- Footer -->

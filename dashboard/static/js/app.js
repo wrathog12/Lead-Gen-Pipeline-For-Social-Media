@@ -296,6 +296,23 @@ async function runIngestion(platform, btnElement) {
 }
 
 
+// ── Expand / Collapse long text ──────────────────────────────
+
+function toggleExpand(elementId, btnElement) {
+    const el = document.getElementById(elementId);
+    if (!el) return;
+
+    const isCollapsed = el.classList.contains('lead-card-text--collapsed');
+    if (isCollapsed) {
+        el.classList.remove('lead-card-text--collapsed');
+        btnElement.textContent = 'Show less ▲';
+    } else {
+        el.classList.add('lead-card-text--collapsed');
+        btnElement.textContent = 'Show more ▼';
+    }
+}
+
+
 // ── Page load: Add subtle entrance animations ─────────────────
 
 document.addEventListener('DOMContentLoaded', () => {

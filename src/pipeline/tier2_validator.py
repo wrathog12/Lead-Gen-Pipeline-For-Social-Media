@@ -288,7 +288,8 @@ class Tier2Validator:
                     config=types.GenerateContentConfig(
                         system_instruction=SYSTEM_INSTRUCTION,
                         temperature=0.1,           # Low temperature for consistent scoring
-                        max_output_tokens=200,      # JSON response is small
+                        max_output_tokens=1024,     # Gemini 2.5 Flash counts thinking tokens
+                                                    # in this budget — 200 was too tight.
                     ),
                 )
 
