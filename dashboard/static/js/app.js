@@ -78,12 +78,46 @@ async function queueAll(platform) {
 
         const data = await response.json();
 
-        if (response.ok) {
-            showToast(`${data.count} comments posted for ${platform}!`, 'success');
-            // Reload page to show updated statuses after a brief delay
-            setTimeout(() => window.location.reload(), 1000);
+        if (response.ok && data.status === 'queue_started') {
+            showToast(`${data.count} comments queued — posting with rate limiting...`, 'success');
+
+            // Update button text to show queue progress
+            const btnText = btn.querySelector('.btn-text');
+            if (btnText) btnText.textContent = `⏳ Posting ${data.count} comments...`;
+
+            // Poll for queue completion
+            let pollCount = 0;
+            const maxPolls = data.count * 15; // ~15 seconds per comment (rate limit buffer)
+
+            const pollInterval = setInterval(async () => {
+                pollCount++;
+
+                try {
+                    const statusResp = await fetch('/api/post/queue-status');
+                    const statusData = await statusResp.json();
+
+                    const isRunning = statusData.running && statusData.running[platform];
+
+                    if (!isRunning || pollCount >= maxPolls) {
+                        clearInterval(pollInterval);
+                        showToast('Queue processing complete! Refreshing...', 'success');
+                        setTimeout(() => window.location.reload(), 1500);
+                    }
+                } catch {
+                    // Polling error — keep going
+                }
+            }, 2000);
+
+        } else if (data.status === 'already_running') {
+            showToast('Queue is already being processed. Please wait.', 'info');
+            btn.classList.remove('btn--loading');
+            btn.disabled = false;
+        } else if (data.status === 'empty') {
+            showToast('No comments to post.', 'info');
+            btn.classList.remove('btn--loading');
+            btn.disabled = false;
         } else {
-            showToast(`Failed: ${data.detail || 'Unknown error'}`, 'error');
+            showToast(`Failed: ${data.detail || data.message || 'Unknown error'}`, 'error');
             btn.classList.remove('btn--loading');
             btn.disabled = false;
         }
@@ -130,6 +164,42 @@ async function copyAndOpen(draftId, postUrl, btnElement) {
         // Fallback for clipboard API not available
         showToast('Please copy the answer manually from the card.', 'error');
         window.open(postUrl, '_blank');
+    }
+}
+
+
+// ── Reject Draft ─────────────────────────────────────────────
+
+async function rejectDraft(draftId, btnElement) {
+    try {
+        const response = await fetch(`/api/queue/${draftId}/reject`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+        });
+
+        if (response.ok) {
+            const card = document.getElementById(`lead-${draftId}`);
+            if (card) {
+                card.classList.add('lead-card--rejected');
+                const badges = card.querySelectorAll('.badge--status-pending, .badge--status-queued');
+                badges.forEach(b => {
+                    b.className = 'badge badge--status-rejected';
+                    b.textContent = 'Rejected';
+                });
+                // Replace the entire actions area with a rejected indicator
+                const actionsDiv = btnElement.closest('.lead-card-actions');
+                if (actionsDiv) {
+                    const postLink = actionsDiv.querySelector('a');
+                    const linkHtml = postLink ? postLink.outerHTML : '';
+                    actionsDiv.innerHTML = linkHtml + '<span class="btn btn--danger" style="cursor: default;">❌ Rejected</span>';
+                }
+            }
+            showToast('Draft rejected.', 'info');
+        } else {
+            showToast('Failed to reject draft.', 'error');
+        }
+    } catch (error) {
+        showToast(`Network error: ${error.message}`, 'error');
     }
 }
 

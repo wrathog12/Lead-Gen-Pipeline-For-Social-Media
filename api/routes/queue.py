@@ -69,11 +69,16 @@ async def reject_draft(draft_id: int, db: Session = Depends(get_db)):
 @router.post("/batch-approve/{platform}")
 async def batch_approve(platform: str, db: Session = Depends(get_db)):
     """Approve all pending drafts for a platform."""
-    updated = (
+    drafts = (
         db.query(DraftComment)
         .join(IngestedPost)
         .filter(IngestedPost.platform == platform, DraftComment.status == "pending")
-        .update({"status": "queued"}, synchronize_session="fetch")
+        .all()
     )
+
+    for draft in drafts:
+        draft.status = "queued"
     db.commit()
-    return {"message": f"{updated} drafts queued for {platform}", "count": updated}
+
+    return {"message": f"{len(drafts)} drafts queued for {platform}", "count": len(drafts)}
+

@@ -12,7 +12,7 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import RedirectResponse
 from sqlalchemy.orm import Session
-from sqlalchemy import func
+from sqlalchemy import func, case
 
 from api.database import get_db, init_db, IngestedPost, DraftComment, PipelineRun
 from api.routes import ingest, queue, post, metrics
@@ -224,7 +224,7 @@ async def dashboard_platform(platform: str, request: Request, db: Session = Depe
         .filter(IngestedPost.platform == platform)
         .order_by(
             # pending first, then queued, then posted, then rejected
-            func.case(
+            case(
                 (DraftComment.status == "pending", 0),
                 (DraftComment.status == "queued", 1),
                 (DraftComment.status == "posted", 2),

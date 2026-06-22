@@ -30,7 +30,7 @@
 </div>
 
 <!-- ── Queue All Button ──────────────────────────────────── -->
-{% if leads %}
+{% if leads and config.post_action != 'clipboard' %}
 <div class="queue-all-wrapper">
     <button class="btn btn--primary btn--lg" id="btn-queue-all" data-platform="{{ platform }}" onclick="queueAll('{{ platform }}')">
         <span class="spinner"></span>
@@ -111,6 +111,12 @@
 
                     <!-- Post / Copy Button -->
                     {% if lead.status == 'pending' or lead.status == 'queued' %}
+                        <!-- Reject Button -->
+                        <button class="btn btn--ghost btn--reject" id="reject-{{ lead.id }}"
+                                onclick="rejectDraft('{{ lead.id }}', this)">
+                            <span class="btn-text">❌ Reject</span>
+                        </button>
+
                         {% if config.post_action == 'clipboard' %}
                         <button class="btn btn--primary" id="post-{{ lead.id }}" 
                                 onclick="copyAndOpen('{{ lead.id }}', '{{ lead.post_url }}', this)"

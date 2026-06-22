@@ -68,7 +68,7 @@ class DraftComment(Base):
     intent_score = Column(Integer, default=0)                       # 0-100
     scheme_relevance = Column(Float, default=0.0)                   # 0.0-1.0
     draft_text = Column(Text, nullable=False)
-    status = Column(String(20), default="pending", index=True)      # pending / queued / posted / rejected
+    status = Column(String(20), default="pending", index=True)      # pending / queued / posted / rejected / failed
     created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
     posted_at = Column(DateTime, nullable=True)
     posted_url = Column(String(500), nullable=True)

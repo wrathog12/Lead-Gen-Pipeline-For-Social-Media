@@ -41,3 +41,13 @@ logs/
 
 # Gemini
 .gemini/
+
+# SQLite journal/temp files
+*.db-shm
+*.db-wal
+*.db-journal
+
+# Temporary/Debug scrapers & scratch files
+data/raw/*.html
+templetest.py
+

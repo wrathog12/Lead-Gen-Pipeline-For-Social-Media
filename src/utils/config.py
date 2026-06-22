@@ -24,6 +24,7 @@ class Settings(BaseSettings):
 
     # YouTube
     youtube_api_key: str = ""
+    youtube_oauth_token: str = ""  # OAuth 2.0 token for posting (API key is read-only)
 
     # X / Twitter
     x_bearer_token: str = ""
