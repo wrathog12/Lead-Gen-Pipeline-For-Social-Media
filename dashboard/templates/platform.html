@@ -1,0 +1,145 @@
+{% extends "base.html" %}
+
+{% block title %}Lead-Gen Pipeline — {{ config.name }}{% endblock %}
+{% block page_title %}{{ config.name }} — Workload & Insights{% endblock %}
+
+{% block content %}
+<!-- ── Analytics Bar ─────────────────────────────────────── -->
+<div class="analytics-bar" style="border-left: 3px solid {{ config.color }};">
+    <div class="analytics-metric">
+        <span class="analytics-icon">📥</span>
+        <div class="analytics-info">
+            <span class="analytics-value">{{ analytics.fetched }}</span>
+            <span class="analytics-label">Posts Fetched</span>
+        </div>
+    </div>
+    <div class="analytics-metric">
+        <span class="analytics-icon">🔍</span>
+        <div class="analytics-info">
+            <span class="analytics-value">{{ analytics.filtered }}</span>
+            <span class="analytics-label">Passed Filters</span>
+        </div>
+    </div>
+    <div class="analytics-metric">
+        <span class="analytics-icon">💬</span>
+        <div class="analytics-info">
+            <span class="analytics-value">{{ analytics.commented }}</span>
+            <span class="analytics-label">Comments Posted</span>
+        </div>
+    </div>
+</div>
+
+<!-- ── Queue All Button ──────────────────────────────────── -->
+{% if leads %}
+<div class="queue-all-wrapper">
+    <button class="btn btn--primary btn--lg" id="btn-queue-all" data-platform="{{ platform }}" onclick="queueAll('{{ platform }}')">
+        <span class="spinner"></span>
+        <span class="btn-text">🚀 Queue All Posts</span>
+    </button>
+</div>
+{% endif %}
+
+<!-- ── Lead Cards ─────────────────────────────────────────── -->
+<div class="leads-list">
+    {% if leads %}
+        {% for lead in leads %}
+        <div class="lead-card fade-in {% if lead.status == 'posted' %}lead-card--posted{% elif lead.status == 'rejected' %}lead-card--rejected{% endif %}" id="lead-{{ lead.id }}">
+            
+            <!-- Header -->
+            <div class="lead-card-header">
+                <div class="lead-card-meta">
+                    <span class="lead-card-platform-icon">
+                        {% if platform == 'reddit' %}
+                        <svg viewBox="0 0 24 24" fill="#FF4500"><circle cx="12" cy="12" r="10"/><path d="M16.5 13.5c0 1.38-2.01 2.5-4.5 2.5s-4.5-1.12-4.5-2.5" fill="none" stroke="#fff" stroke-width="1.2"/><circle cx="9" cy="11" r="1.2" fill="#fff"/><circle cx="15" cy="11" r="1.2" fill="#fff"/></svg>
+                        {% elif platform == 'x' %}
+                        <svg viewBox="0 0 24 24" fill="#1DA1F2"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                        {% elif platform == 'youtube' %}
+                        <svg viewBox="0 0 24 24" fill="#FF0000"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814z"/><polygon fill="#fff" points="9.545,15.568 15.818,12 9.545,8.432"/></svg>
+                        {% elif platform == 'quora' %}
+                        <svg viewBox="0 0 24 24" fill="#B92B27"><path d="M12.735 19.489c-.678-1.269-1.49-2.576-3.146-2.576-.376 0-.752.082-1.082.252l-.614-1.16c.834-.744 2.024-1.282 3.61-1.282 1.904 0 3.222.876 4.142 2.236.648-1.26.978-2.88.978-4.868 0-4.776-1.856-7.572-5.392-7.572-3.46 0-5.392 2.796-5.392 7.572s1.932 7.572 5.392 7.572c.558 0 1.074-.068 1.504-.174zM12.231 24C5.476 24 0 18.522 0 12S5.476 0 12.231 0C18.988 0 24 5.478 24 12s-5.012 12-11.769 12z"/></svg>
+                        {% endif %}
+                    </span>
+                    <span class="lead-card-source">{{ lead.source }}</span>
+                    <span class="lead-card-dot">●</span>
+                    <span class="lead-card-author">{{ lead.author }}</span>
+                </div>
+                <span class="lead-card-time">{{ lead.timestamp }}</span>
+            </div>
+
+            <!-- Original Post -->
+            <div class="lead-card-section">
+                <div class="lead-card-label">{{ config.post_label }}</div>
+                <div class="lead-card-text {% if lead.post_text|length > config.post_truncate %}lead-card-text--truncated{% endif %}">
+                    {{ lead.post_text[:config.post_truncate] }}
+                </div>
+            </div>
+
+            <hr class="lead-card-divider">
+
+            <!-- AI-Generated Response -->
+            <div class="lead-card-section">
+                <div class="lead-card-label lead-card-label--ai">{{ config.response_label }}</div>
+                <div class="lead-card-text {% if lead.draft_text|length > config.response_truncate %}lead-card-text--truncated{% endif %}">
+                    {{ lead.draft_text[:config.response_truncate] }}
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="lead-card-footer">
+                <div class="lead-card-badges">
+                    <!-- Intent Score Badge -->
+                    <span class="badge {% if lead.intent_score >= 85 %}badge--intent{% elif lead.intent_score >= 70 %}badge--intent-medium{% else %}badge--intent-low{% endif %}">
+                        Intent: {{ lead.intent_score }}
+                    </span>
+                    
+                    <!-- Scheme Badge -->
+                    {% if lead.matched_scheme %}
+                    <span class="badge badge--scheme">{{ lead.matched_scheme }}</span>
+                    {% endif %}
+
+                    <!-- Status Badge -->
+                    <span class="badge badge--status-{{ lead.status }}">
+                        {{ lead.status | capitalize }}
+                    </span>
+                </div>
+
+                <div class="lead-card-actions">
+                    <!-- Post Link -->
+                    <a href="{{ lead.post_url }}" target="_blank" class="btn btn--ghost" id="link-{{ lead.id }}">
+                        🔗 Post Link
+                    </a>
+
+                    <!-- Post / Copy Button -->
+                    {% if lead.status == 'pending' or lead.status == 'queued' %}
+                        {% if config.post_action == 'clipboard' %}
+                        <button class="btn btn--primary" id="post-{{ lead.id }}" 
+                                onclick="copyAndOpen('{{ lead.id }}', '{{ lead.post_url }}', this)"
+                                data-draft="{{ lead.draft_text | e }}">
+                            <span class="spinner"></span>
+                            <span class="btn-text">{{ config.post_button }}</span>
+                        </button>
+                        {% else %}
+                        <button class="btn btn--primary" id="post-{{ lead.id }}" 
+                                onclick="postComment('{{ lead.id }}', this)" style="background: {{ config.color }}; border-color: {{ config.color }};">
+                            <span class="spinner"></span>
+                            <span class="btn-text">{{ config.post_button }}</span>
+                        </button>
+                        {% endif %}
+                    {% elif lead.status == 'posted' %}
+                        <span class="btn btn--success" style="cursor: default;">✅ Posted</span>
+                    {% elif lead.status == 'rejected' %}
+                        <span class="btn btn--danger" style="cursor: default;">❌ Rejected</span>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    {% else %}
+        <div class="empty-state">
+            <div class="empty-state-icon">📭</div>
+            <div class="empty-state-text">No leads found for {{ config.name }}</div>
+            <div class="empty-state-sub">Run the ingestion pipeline to fetch posts from {{ config.name }}.</div>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

@@ -28,6 +28,9 @@ data/raw/*.json
 data/vector_store/*.faiss
 data/vector_store/*.pkl
 
+# Database
+*.db
+
 # OS
 .DS_Store
 Thumbs.db

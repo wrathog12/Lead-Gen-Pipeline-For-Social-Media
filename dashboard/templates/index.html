@@ -1,14 +1,163 @@
-<!-- Dashboard Overview Template — Placeholder -->
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Lead-Gen Dashboard — Overview</title>
-    <link rel="stylesheet" href="/static/css/styles.css">
-</head>
-<body>
-    <h1>Lead-Gen Pipeline Dashboard</h1>
-    <p>Overview metrics will be rendered here.</p>
-    <script src="/static/js/app.js"></script>
-</body>
-</html>
+{% extends "base.html" %}
+
+{% block title %}Lead-Gen Pipeline — Dashboard{% endblock %}
+{% block page_title %}Dashboard Overview{% endblock %}
+
+{% block content %}
+<!-- ── Pipeline Summary Bar ──────────────────────────────── -->
+<div class="summary-bar">
+    <div class="summary-metric">
+        <div class="summary-metric-value">{{ total_fetched }}</div>
+        <div class="summary-metric-label">Total Ingested</div>
+    </div>
+    <div class="summary-metric">
+        <div class="summary-metric-value">{{ total_filtered }}</div>
+        <div class="summary-metric-label">Passed Filters</div>
+    </div>
+    <div class="summary-metric">
+        <div class="summary-metric-value">{{ total_drafted }}</div>
+        <div class="summary-metric-label">Drafts Generated</div>
+    </div>
+    <div class="summary-metric">
+        <div class="summary-metric-value">{{ total_posted }}</div>
+        <div class="summary-metric-label">Comments Posted</div>
+    </div>
+    <div class="summary-metric">
+        <div class="summary-metric-value">{{ queue_pending }}</div>
+        <div class="summary-metric-label">In Queue</div>
+    </div>
+</div>
+
+<!-- ── Ingestion Controls ────────────────────────────────── -->
+<div class="ingestion-controls">
+    <div class="ingestion-header">
+        <div class="ingestion-title">
+            <span class="ingestion-icon">🚀</span>
+            <div>
+                <h3>Pipeline Ingestion</h3>
+                <p class="ingestion-subtitle">Fetch posts, filter, match schemes, and generate draft comments</p>
+            </div>
+        </div>
+        <button class="btn btn--primary btn--glow" id="btn-run-all" onclick="runIngestion('all', this)">
+            <span class="btn-text">▶ Run All Platforms</span>
+            <span class="btn-loader"></span>
+        </button>
+    </div>
+    <div class="ingestion-platforms">
+        <button class="btn btn--platform" style="--platform-color: #FF4500;" onclick="runIngestion('reddit', this)" id="btn-ingest-reddit">
+            Reddit
+        </button>
+        <button class="btn btn--platform" style="--platform-color: #1DA1F2;" onclick="runIngestion('x', this)" id="btn-ingest-x">
+            X (Twitter)
+        </button>
+        <button class="btn btn--platform" style="--platform-color: #FF0000;" onclick="runIngestion('youtube', this)" id="btn-ingest-youtube">
+            YouTube
+        </button>
+        <button class="btn btn--platform" style="--platform-color: #B92B27;" onclick="runIngestion('quora', this)" id="btn-ingest-quora">
+            Quora
+        </button>
+    </div>
+    <div class="ingestion-status" id="ingestion-status" style="display:none;">
+        <div class="ingestion-progress-bar">
+            <div class="ingestion-progress-fill" id="ingestion-progress-fill"></div>
+        </div>
+        <span class="ingestion-status-text" id="ingestion-status-text">Initializing pipeline...</span>
+    </div>
+</div>
+
+<!-- ── Platform Flip Cards (2×3 grid) ────────────────────── -->
+<div class="card-grid">
+
+    {% for key, stats in platform_stats.items() %}
+    <!-- {{ stats.config.name }} Card -->
+    <div class="flip-card" onclick="window.location='/dashboard/{{ key }}'">
+        <div class="flip-card-inner">
+            <!-- FRONT -->
+            <div class="flip-card-front" style="background: linear-gradient(135deg, var(--bg-secondary), rgba({% if key == 'reddit' %}255,69,0{% elif key == 'youtube' %}255,0,0{% elif key == 'x' %}29,161,242{% elif key == 'quora' %}185,43,39{% endif %}, 0.08));">
+                <div class="flip-card-logo" style="background: rgba({% if key == 'reddit' %}255,69,0{% elif key == 'youtube' %}255,0,0{% elif key == 'x' %}29,161,242{% elif key == 'quora' %}185,43,39{% endif %}, 0.15); border-radius: 16px;">
+                    {% if key == 'reddit' %}
+                    <svg viewBox="0 0 24 24" fill="#FF4500"><circle cx="12" cy="12" r="10"/><path d="M16.5 13.5c0 1.38-2.01 2.5-4.5 2.5s-4.5-1.12-4.5-2.5" fill="none" stroke="#fff" stroke-width="1.2"/><circle cx="9" cy="11" r="1.2" fill="#fff"/><circle cx="15" cy="11" r="1.2" fill="#fff"/></svg>
+                    {% elif key == 'x' %}
+                    <svg viewBox="0 0 24 24" fill="#1DA1F2"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                    {% elif key == 'youtube' %}
+                    <svg viewBox="0 0 24 24" fill="#FF0000"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814z"/><polygon fill="#fff" points="9.545,15.568 15.818,12 9.545,8.432"/></svg>
+                    {% elif key == 'quora' %}
+                    <svg viewBox="0 0 24 24" fill="#B92B27"><path d="M12.735 19.489c-.678-1.269-1.49-2.576-3.146-2.576-.376 0-.752.082-1.082.252l-.614-1.16c.834-.744 2.024-1.282 3.61-1.282 1.904 0 3.222.876 4.142 2.236.648-1.26.978-2.88.978-4.868 0-4.776-1.856-7.572-5.392-7.572-3.46 0-5.392 2.796-5.392 7.572s1.932 7.572 5.392 7.572c.558 0 1.074-.068 1.504-.174zM12.231 24C5.476 24 0 18.522 0 12S5.476 0 12.231 0C18.988 0 24 5.478 24 12s-5.012 12-11.769 12z"/></svg>
+                    {% endif %}
+                </div>
+                <div class="flip-card-name">{{ stats.config.name }}</div>
+            </div>
+
+            <!-- BACK -->
+            <div class="flip-card-back">
+                <div class="flip-card-back-header">
+                    <span class="flip-card-back-title">{{ stats.config.name }} Analytics</span>
+                    <a href="/dashboard/{{ key }}" class="flip-card-back-link" onclick="event.stopPropagation();">
+                        View →
+                    </a>
+                </div>
+                <div class="flip-card-stats">
+                    {% set max_val = [stats.fetched, 1] | max %}
+                    <div class="flip-stat-row">
+                        <span class="flip-stat-label">Fetched</span>
+                        <div class="flip-stat-bar">
+                            <div class="flip-stat-bar-fill" style="width: 100%; background: var(--accent-blue);"></div>
+                        </div>
+                        <span class="flip-stat-value">{{ stats.fetched }}</span>
+                    </div>
+                    <div class="flip-stat-row">
+                        <span class="flip-stat-label">Filtered</span>
+                        <div class="flip-stat-bar">
+                            <div class="flip-stat-bar-fill" style="width: {{ (stats.filtered / max_val * 100) | int }}%; background: var(--accent-orange);"></div>
+                        </div>
+                        <span class="flip-stat-value">{{ stats.filtered }}</span>
+                    </div>
+                    <div class="flip-stat-row">
+                        <span class="flip-stat-label">Drafted</span>
+                        <div class="flip-stat-bar">
+                            <div class="flip-stat-bar-fill" style="width: {{ (stats.drafted / max_val * 100) | int }}%; background: var(--accent-purple);"></div>
+                        </div>
+                        <span class="flip-stat-value">{{ stats.drafted }}</span>
+                    </div>
+                    <div class="flip-stat-row">
+                        <span class="flip-stat-label">Posted</span>
+                        <div class="flip-stat-bar">
+                            <div class="flip-stat-bar-fill" style="width: {{ (stats.posted / max_val * 100) | int }}%; background: var(--accent-green);"></div>
+                        </div>
+                        <span class="flip-stat-value">{{ stats.posted }}</span>
+                    </div>
+                </div>
+                <div class="flip-card-last-run">
+                    Last run: {{ stats.last_run }}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+
+    <!-- Pipeline Health Card -->
+    <div class="health-card card-grid-item--wide">
+        <h3>⚡ Pipeline Health</h3>
+        <div class="health-status">
+            <div class="health-dot"></div>
+            <span style="color: var(--accent-green); font-weight: 600; font-size: 0.85rem;">Healthy</span>
+        </div>
+        <div class="health-metric">
+            <span class="health-metric-label">Ingesters Active</span>
+            <span class="health-metric-value">4 / 4</span>
+        </div>
+        <div class="health-metric">
+            <span class="health-metric-label">Total Leads in Queue</span>
+            <span class="health-metric-value">{{ queue_pending }}</span>
+        </div>
+        <div class="health-metric">
+            <span class="health-metric-label">Database Size</span>
+            <span class="health-metric-value">{{ total_fetched }} posts</span>
+        </div>
+        <div class="health-metric">
+            <span class="health-metric-label">Success Rate</span>
+            <span class="health-metric-value">{% if total_drafted > 0 %}{{ ((total_posted / total_drafted) * 100) | int }}%{% else %}—{% endif %}</span>
+        </div>
+    </div>
+</div>
+{% endblock %}

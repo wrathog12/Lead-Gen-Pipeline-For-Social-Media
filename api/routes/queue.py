@@ -2,34 +2,78 @@
 Queue Routes — CRUD operations for the review queue.
 """
 
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends, HTTPException
+from sqlalchemy.orm import Session
+from sqlalchemy import func
+
+from api.database import get_db, DraftComment, IngestedPost
 
 router = APIRouter()
 
 
 @router.get("/")
-async def list_pending():
-    """List all pending draft comments for human review."""
-    # TODO: Query database for pending drafts
-    return {"drafts": [], "count": 0}
+async def list_pending(db: Session = Depends(get_db)):
+    """List all pending draft comments."""
+    drafts = (
+        db.query(DraftComment)
+        .filter(DraftComment.status == "pending")
+        .order_by(DraftComment.created_at.desc())
+        .all()
+    )
+    return {
+        "drafts": [{"id": d.id, "status": d.status, "post_id": d.post_id} for d in drafts],
+        "count": len(drafts),
+    }
+
+
+@router.get("/{platform}")
+async def list_platform_pending(platform: str, db: Session = Depends(get_db)):
+    """List pending drafts for a specific platform."""
+    drafts = (
+        db.query(DraftComment)
+        .join(IngestedPost)
+        .filter(IngestedPost.platform == platform, DraftComment.status == "pending")
+        .order_by(DraftComment.created_at.desc())
+        .all()
+    )
+    return {
+        "drafts": [{"id": d.id, "status": d.status, "post_id": d.post_id} for d in drafts],
+        "count": len(drafts),
+    }
 
 
 @router.put("/{draft_id}/approve")
-async def approve_draft(draft_id: int):
-    """Approve a draft comment for posting."""
-    # TODO: Update draft status to APPROVED
-    return {"message": f"Draft {draft_id} approved"}
+async def approve_draft(draft_id: int, db: Session = Depends(get_db)):
+    """Approve a draft comment for posting (sets status to queued)."""
+    draft = db.query(DraftComment).filter(DraftComment.id == draft_id).first()
+    if not draft:
+        raise HTTPException(status_code=404, detail="Draft not found")
+
+    draft.status = "queued"
+    db.commit()
+    return {"message": f"Draft {draft_id} queued for posting", "status": "queued"}
 
 
 @router.put("/{draft_id}/reject")
-async def reject_draft(draft_id: int):
+async def reject_draft(draft_id: int, db: Session = Depends(get_db)):
     """Reject a draft comment."""
-    # TODO: Update draft status to REJECTED
-    return {"message": f"Draft {draft_id} rejected"}
+    draft = db.query(DraftComment).filter(DraftComment.id == draft_id).first()
+    if not draft:
+        raise HTTPException(status_code=404, detail="Draft not found")
+
+    draft.status = "rejected"
+    db.commit()
+    return {"message": f"Draft {draft_id} rejected", "status": "rejected"}
 
 
-@router.put("/{draft_id}/edit")
-async def edit_draft(draft_id: int, new_text: str):
-    """Edit a draft comment's text before approval."""
-    # TODO: Update draft text in database
-    return {"message": f"Draft {draft_id} updated"}
+@router.post("/batch-approve/{platform}")
+async def batch_approve(platform: str, db: Session = Depends(get_db)):
+    """Approve all pending drafts for a platform."""
+    updated = (
+        db.query(DraftComment)
+        .join(IngestedPost)
+        .filter(IngestedPost.platform == platform, DraftComment.status == "pending")
+        .update({"status": "queued"}, synchronize_session="fetch")
+    )
+    db.commit()
+    return {"message": f"{updated} drafts queued for {platform}", "count": updated}
