@@ -257,37 +257,55 @@ class QuoraIngester(BaseIngester):
         Launches a Playwright browser, visits each seed, extracts
         related questions, normalizes, and returns.
         """
+        import sys
+
+        # ── Windows fix: Playwright needs SelectorEventLoop ──────
+        # The default ProactorEventLoop on Windows doesn't support
+        # subprocess transport, causing NotImplementedError when
+        # Playwright tries to launch Chromium. Switch policy before
+        # Playwright starts.
+        if sys.platform == "win32":
+            asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
+
         from playwright.async_api import async_playwright
 
         all_questions: List[Dict[str, Any]] = []
 
-        async with async_playwright() as pw:
-            browser = await pw.chromium.launch(headless=self.headless)
-            context = await browser.new_context(
-                user_agent=(
-                    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
-                    "AppleWebKit/537.36 (KHTML, like Gecko) "
-                    "Chrome/125.0.0.0 Safari/537.36"
-                ),
-                viewport={"width": 1280, "height": 720},
-            )
-            page = await context.new_page()
-
-            for i, seed_url in enumerate(self.seed_urls):
-                if len(all_questions) >= limit:
-                    break
-
-                remaining = limit - len(all_questions)
-                questions = await self._scrape_question_page(
-                    page, seed_url, max_questions=remaining
+        try:
+            async with async_playwright() as pw:
+                browser = await pw.chromium.launch(headless=self.headless)
+                context = await browser.new_context(
+                    user_agent=(
+                        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+                        "AppleWebKit/537.36 (KHTML, like Gecko) "
+                        "Chrome/125.0.0.0 Safari/537.36"
+                    ),
+                    viewport={"width": 1280, "height": 720},
                 )
-                all_questions.extend(questions)
+                page = await context.new_page()
 
-                # Respectful delay between pages (skip after last)
-                if i < len(self.seed_urls) - 1 and len(all_questions) < limit:
-                    await asyncio.sleep(BETWEEN_PAGES_WAIT)
+                for i, seed_url in enumerate(self.seed_urls):
+                    if len(all_questions) >= limit:
+                        break
 
-            await browser.close()
+                    remaining = limit - len(all_questions)
+                    questions = await self._scrape_question_page(
+                        page, seed_url, max_questions=remaining
+                    )
+                    all_questions.extend(questions)
+
+                    # Respectful delay between pages (skip after last)
+                    if i < len(self.seed_urls) - 1 and len(all_questions) < limit:
+                        await asyncio.sleep(BETWEEN_PAGES_WAIT)
+
+                await browser.close()
+
+        except Exception as e:
+            logger.error(
+                "playwright_failed",
+                error=str(e),
+                questions_so_far=len(all_questions),
+            )
 
         # Normalize all questions
         results = [self.normalize_post(q) for q in all_questions]

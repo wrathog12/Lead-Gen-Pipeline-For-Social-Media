@@ -1,0 +1,954 @@
+[
+  {
+    "scheme_id": "ICICI_PRU_BLUECHIP",
+    "scheme_name": "ICICI Prudential Bluechip Fund",
+    "metadata": {
+      "category": "Mutual Fund",
+      "sub_category": "Large Cap Equity",
+      "risk_level": "Very High",
+      "target_demographic": "Long Term Investors"
+    },
+    "bm25_keywords": [
+      "bluechip",
+      "large cap",
+      "equity",
+      "long term",
+      "shares",
+      "stock market",
+      "wealth creation",
+      "safe equity"
+    ],
+    "vector_description": "An open-ended equity scheme predominantly investing in large-cap stocks. Suitable for investors looking for long-term wealth creation and willing to take high risk. Ideal for building a core, stable equity portfolio with India's biggest companies."
+  },
+  {
+    "scheme_id": "ICICI_PRU_VALUE_DISCOVERY",
+    "scheme_name": "ICICI Prudential Value Discovery Fund",
+    "metadata": {
+      "category": "Mutual Fund",
+      "sub_category": "Value Fund",
+      "risk_level": "Very High",
+      "target_demographic": "Patient Investors"
+    },
+    "bm25_keywords": [
+      "value fund",
+      "undervalued",
+      "contrarian",
+      "high return",
+      "value investing",
+      "long term"
+    ],
+    "vector_description": "An open-ended equity scheme following a value investment strategy. It identifies and invests in stocks that are trading at a discount to their intrinsic value. Perfect for patient investors looking for outsized long-term returns."
+  },
+  {
+    "scheme_id": "ICICI_PRU_FLEXICAP",
+    "scheme_name": "ICICI Prudential Flexicap Fund",
+    "metadata": {
+      "category": "Mutual Fund",
+      "sub_category": "Flexi Cap Equity",
+      "risk_level": "Very High",
+      "target_demographic": "Aggressive Investors"
+    },
+    "bm25_keywords": [
+      "flexicap",
+      "all cap",
+      "large mid small",
+      "dynamic equity",
+      "diversified",
+      "wealth creation"
+    ],
+    "vector_description": "A dynamic equity fund that invests across large, mid, and small-cap stocks based on market conditions. Suitable for investors who want the fund manager to actively shift allocations across market capitalizations for optimal growth."
+  },
+  {
+    "scheme_id": "ICICI_PRU_SMALLCAP",
+    "scheme_name": "ICICI Prudential Smallcap Fund",
+    "metadata": {
+      "category": "Mutual Fund",
+      "sub_category": "Small Cap Equity",
+      "risk_level": "Very High",
+      "target_demographic": "High Risk Takers"
+    },
+    "bm25_keywords": [
+      "smallcap",
+      "high risk",
+      "aggressive growth",
+      "multibagger",
+      "small companies",
+      "high return"
+    ],
+    "vector_description": "An equity scheme focused exclusively on small-cap companies with high growth potential. Highly volatile but offers the potential for exceptional returns over a 7-10 year horizon. Strictly for investors with a very high-risk appetite."
+  },
+  {
+    "scheme_id": "ICICI_PRU_MIDCAP",
+    "scheme_name": "ICICI Prudential Midcap Fund",
+    "metadata": {
+      "category": "Mutual Fund",
+      "sub_category": "Mid Cap Equity",
+      "risk_level": "Very High",
+      "target_demographic": "Aggressive Investors"
+    },
+    "bm25_keywords": [
+      "midcap",
+      "emerging companies",
+      "growth stocks",
+      "medium risk",
+      "wealth creation"
+    ],
+    "vector_description": "Invests predominantly in mid-cap companies that are the potential large-caps of tomorrow. Offers a balance between the stability of large caps and the explosive growth of small caps."
+  },
+  {
+    "scheme_id": "ICICI_PRU_INFRA",
+    "scheme_name": "ICICI Prudential Infrastructure Fund",
+    "metadata": {
+      "category": "Mutual Fund",
+      "sub_category": "Sectoral/Thematic",
+      "risk_level": "Very High",
+      "target_demographic": "Thematic Investors"
+    },
+    "bm25_keywords": [
+      "infrastructure",
+      "construction",
+      "real estate",
+      "cement",
+      "sectoral fund",
+      "india growth"
+    ],
+    "vector_description": "A sectoral fund that invests in companies engaged in infrastructure and allied sectors like construction, cement, and energy. Suitable for investors looking to capitalize on India's capital expenditure boom."
+  },
+  {
+    "scheme_id": "ICICI_PRU_TECH_FUND",
+    "scheme_name": "ICICI Prudential Technology Fund",
+    "metadata": {
+      "category": "Mutual Fund",
+      "sub_category": "Sectoral/Thematic",
+      "risk_level": "Very High",
+      "target_demographic": "Aggressive Investors"
+    },
+    "bm25_keywords": [
+      "technology",
+      "it sector",
+      "software",
+      "tech fund",
+      "high return",
+      "sectoral",
+      "tech stocks"
+    ],
+    "vector_description": "An open-ended equity scheme investing in technology and IT sector companies. Suited for aggressive investors who want high growth and believe in the future of the Indian and global software industry."
+  },
+  {
+    "scheme_id": "ICICI_PRU_PHARMA",
+    "scheme_name": "ICICI Prudential Pharma Healthcare and Diagnostics (P.H.D) Fund",
+    "metadata": {
+      "category": "Mutual Fund",
+      "sub_category": "Sectoral/Thematic",
+      "risk_level": "Very High",
+      "target_demographic": "Thematic Investors"
+    },
+    "bm25_keywords": [
+      "pharma",
+      "healthcare",
+      "hospitals",
+      "medicines",
+      "defensive sector",
+      "health"
+    ],
+    "vector_description": "Invests in pharmaceutical, healthcare, hospitals, and diagnostic companies. Acts as a defensive thematic play, suitable for investors wanting exposure to the growing healthcare sector."
+  },
+  {
+    "scheme_id": "ICICI_PRU_DIVIDEND_YIELD",
+    "scheme_name": "ICICI Prudential Dividend Yield Equity Fund",
+    "metadata": {
+      "category": "Mutual Fund",
+      "sub_category": "Dividend Yield",
+      "risk_level": "High",
+      "target_demographic": "Income Seeking Investors"
+    },
+    "bm25_keywords": [
+      "dividend",
+      "regular income",
+      "yield",
+      "stable stocks",
+      "cash flow",
+      "equity income"
+    ],
+    "vector_description": "Invests primarily in dividend-yielding stocks. Designed for investors who seek capital appreciation along with the stability of regular dividend payouts from established companies."
+  },
+  {
+    "scheme_id": "ICICI_PRU_ELSS",
+    "scheme_name": "ICICI Prudential ELSS Tax Saver Fund",
+    "metadata": {
+      "category": "Mutual Fund",
+      "sub_category": "ELSS",
+      "risk_level": "Very High",
+      "target_demographic": "Tax Payers"
+    },
+    "bm25_keywords": [
+      "elss",
+      "tax saving",
+      "80c",
+      "deduction",
+      "income tax",
+      "lock in",
+      "tax saver"
+    ],
+    "vector_description": "An open-ended Equity Linked Saving Scheme (ELSS) with a statutory lock-in of 3 years and tax benefit. Suitable for investors looking to save tax under Section 80C of the Income Tax Act while aiming for long-term capital appreciation."
+  },
+  {
+    "scheme_id": "ICICI_PRU_NIFTY_50",
+    "scheme_name": "ICICI Prudential Nifty 50 Index Fund",
+    "metadata": {
+      "category": "Mutual Fund",
+      "sub_category": "Index Fund",
+      "risk_level": "High",
+      "target_demographic": "Passive Investors"
+    },
+    "bm25_keywords": [
+      "index fund",
+      "nifty 50",
+      "passive",
+      "low cost",
+      "market return",
+      "top 50 companies"
+    ],
+    "vector_description": "A low-cost passive index fund that replicates the Nifty 50 Index. Ideal for beginner investors who want guaranteed market-linked returns without the risk of active fund manager underperformance."
+  },
+  {
+    "scheme_id": "ICICI_PRU_BALANCED_ADV",
+    "scheme_name": "ICICI Prudential Balanced Advantage Fund",
+    "metadata": {
+      "category": "Mutual Fund",
+      "sub_category": "Dynamic Asset Allocation",
+      "risk_level": "High",
+      "target_demographic": "Risk Averse Investors"
+    },
+    "bm25_keywords": [
+      "balanced",
+      "advantage",
+      "hybrid",
+      "baf",
+      "low risk equity",
+      "volatile market",
+      "asset allocation"
+    ],
+    "vector_description": "A dynamic asset allocation fund that shifts between equity and debt based on market valuations. Perfect for investors who want equity exposure but are scared of market volatility and crashes."
+  },
+  {
+    "scheme_id": "ICICI_PRU_EQUITY_DEBT",
+    "scheme_name": "ICICI Prudential Equity & Debt Fund",
+    "metadata": {
+      "category": "Mutual Fund",
+      "sub_category": "Aggressive Hybrid",
+      "risk_level": "Very High",
+      "target_demographic": "Moderate Risk Takers"
+    },
+    "bm25_keywords": [
+      "hybrid",
+      "equity and debt",
+      "aggressive hybrid",
+      "65 equity",
+      "balanced fund"
+    ],
+    "vector_description": "An aggressive hybrid fund that invests 65-80% in equity and the rest in debt. Offers the high growth potential of equity while the debt portion provides a cushion against steep market falls."
+  },
+  {
+    "scheme_id": "ICICI_PRU_MULTI_ASSET",
+    "scheme_name": "ICICI Prudential Multi-Asset Fund",
+    "metadata": {
+      "category": "Mutual Fund",
+      "sub_category": "Multi Asset Allocation",
+      "risk_level": "High",
+      "target_demographic": "Diversification Seekers"
+    },
+    "bm25_keywords": [
+      "multi asset",
+      "gold",
+      "silver",
+      "equity debt gold",
+      "diversified",
+      "all weather"
+    ],
+    "vector_description": "A unique fund that invests across three or more asset classes like Equity, Debt, Gold, and Silver. Provides an all-weather portfolio for investors seeking ultimate diversification to protect against inflation."
+  },
+  {
+    "scheme_id": "ICICI_PRU_REGULAR_SAVINGS",
+    "scheme_name": "ICICI Prudential Regular Savings Fund",
+    "metadata": {
+      "category": "Mutual Fund",
+      "sub_category": "Conservative Hybrid",
+      "risk_level": "Moderate",
+      "target_demographic": "Retirees & Conservative Savers"
+    },
+    "bm25_keywords": [
+      "regular savings",
+      "conservative",
+      "mostly debt",
+      "safe hybrid",
+      "retiree fund",
+      "monthly income"
+    ],
+    "vector_description": "A conservative hybrid fund that invests predominantly in debt instruments (75-90%) with a small exposure to equity. Ideal for retirees or conservative investors seeking stable returns marginally better than FDs."
+  },
+  {
+    "scheme_id": "ICICI_PRU_ARBITRAGE",
+    "scheme_name": "ICICI Prudential Arbitrage Fund",
+    "metadata": {
+      "category": "Mutual Fund",
+      "sub_category": "Arbitrage",
+      "risk_level": "Low",
+      "target_demographic": "Tax Conscious Savers"
+    },
+    "bm25_keywords": [
+      "arbitrage",
+      "tax free",
+      "safe",
+      "like fd",
+      "cash market",
+      "derivatives"
+    ],
+    "vector_description": "Generates income by exploiting the price difference between cash and derivative markets. Offers returns comparable to liquid funds or FDs but is taxed as an equity fund, making it highly tax-efficient."
+  },
+  {
+    "scheme_id": "ICICI_PRU_LIQUID",
+    "scheme_name": "ICICI Prudential Liquid Fund",
+    "metadata": {
+      "category": "Mutual Fund",
+      "sub_category": "Debt",
+      "risk_level": "Low",
+      "target_demographic": "Short Term Savers"
+    },
+    "bm25_keywords": [
+      "liquid fund",
+      "short term",
+      "debt",
+      "safe",
+      "better than savings",
+      "emergency fund",
+      "park money"
+    ],
+    "vector_description": "A debt fund that invests in very short-term market instruments. Ideal for parking idle cash or an emergency fund for a few weeks to months, offering better returns than a standard bank savings account with very low risk."
+  },
+  {
+    "scheme_id": "ICICI_PRU_OVERNIGHT",
+    "scheme_name": "ICICI Prudential Overnight Fund",
+    "metadata": {
+      "category": "Mutual Fund",
+      "sub_category": "Debt",
+      "risk_level": "Very Low",
+      "target_demographic": "Corporate & Ultra Short Term"
+    },
+    "bm25_keywords": [
+      "overnight",
+      "1 day",
+      "safest fund",
+      "zero risk",
+      "corporate treasury",
+      "weekend parking"
+    ],
+    "vector_description": "The safest category of mutual funds, investing in securities with a maturity of just one day. Completely immune to interest rate risk. Perfect for parking large sums of money for literally a few days."
+  },
+  {
+    "scheme_id": "ICICI_PRU_CORPORATE_BOND",
+    "scheme_name": "ICICI Prudential Corporate Bond Fund",
+    "metadata": {
+      "category": "Mutual Fund",
+      "sub_category": "Debt",
+      "risk_level": "Low to Moderate",
+      "target_demographic": "Medium Term Savers"
+    },
+    "bm25_keywords": [
+      "corporate bond",
+      "aa+ rating",
+      "safe debt",
+      "stable returns",
+      "fixed income",
+      "3 year investment"
+    ],
+    "vector_description": "Invests predominantly in highly rated (AA+ and above) corporate bonds. Suitable for investors looking for steady, predictable returns over a 2 to 3-year horizon without taking equity risks."
+  },
+  {
+    "scheme_id": "ICICI_PRU_GILT",
+    "scheme_name": "ICICI Prudential Gilt Fund",
+    "metadata": {
+      "category": "Mutual Fund",
+      "sub_category": "Debt",
+      "risk_level": "Moderate",
+      "target_demographic": "Interest Rate Speculators"
+    },
+    "bm25_keywords": [
+      "gilt",
+      "government securities",
+      "zero credit risk",
+      "rbi bonds",
+      "sovereign",
+      "interest rate"
+    ],
+    "vector_description": "Invests strictly in government securities across various maturities. Carries zero default risk (sovereign guarantee) but is highly sensitive to RBI interest rate changes. Good for long-term debt allocation."
+  },
+  {
+    "scheme_id": "ICICI_BANK_AMAZON_PAY_CC",
+    "scheme_name": "Amazon Pay ICICI Bank Credit Card",
+    "metadata": {
+      "category": "Credit Card",
+      "sub_category": "Co-branded / Shopping",
+      "risk_level": "None",
+      "target_demographic": "Online Shoppers"
+    },
+    "bm25_keywords": [
+      "amazon pay",
+      "credit card",
+      "lifetime free",
+      "ltf",
+      "cashback",
+      "shopping",
+      "prime member",
+      "no annual fee"
+    ],
+    "vector_description": "A lifetime free co-branded credit card offering unlimited flat cashback on Amazon purchases (up to 5% for Prime members) and flat 1% cashback on other spends. Perfect for frequent online shoppers looking for a no-fee card."
+  },
+  {
+    "scheme_id": "ICICI_BANK_SAPPHIRO_CC",
+    "scheme_name": "ICICI Bank Sapphiro Credit Card",
+    "metadata": {
+      "category": "Credit Card",
+      "sub_category": "Premium Travel",
+      "risk_level": "None",
+      "target_demographic": "Frequent Flyers & High Earners"
+    },
+    "bm25_keywords": [
+      "sapphiro",
+      "premium",
+      "lounge access",
+      "airport lounge",
+      "golf",
+      "movie tickets",
+      "bookmyshow",
+      "travel card"
+    ],
+    "vector_description": "A premium lifestyle credit card designed for frequent travelers. Offers international and domestic airport lounge access, complimentary golf rounds, and buy-one-get-one movie ticket offers on BookMyShow."
+  },
+  {
+    "scheme_id": "ICICI_BANK_RUBYX_CC",
+    "scheme_name": "ICICI Bank Rubyx Credit Card",
+    "metadata": {
+      "category": "Credit Card",
+      "sub_category": "Lifestyle",
+      "risk_level": "None",
+      "target_demographic": "Mid-Premium Earners"
+    },
+    "bm25_keywords": [
+      "rubyx",
+      "lounge access",
+      "lifestyle",
+      "concierge",
+      "movie tickets",
+      "rewards"
+    ],
+    "vector_description": "A mid-premium lifestyle credit card offering high-end perks. Includes welcome vouchers, complimentary railway and airport lounge access, 24/7 concierge services, and exclusive dining discounts."
+  },
+  {
+    "scheme_id": "ICICI_BANK_CORAL_CC",
+    "scheme_name": "ICICI Bank Coral Credit Card",
+    "metadata": {
+      "category": "Credit Card",
+      "sub_category": "Everyday Spends",
+      "risk_level": "None",
+      "target_demographic": "Beginners & Salaried"
+    },
+    "bm25_keywords": [
+      "coral",
+      "first credit card",
+      "movie discount",
+      "railway lounge",
+      "fuel waiver",
+      "basic card"
+    ],
+    "vector_description": "An excellent entry-level credit card for everyday spends. Offers discounts on movie tickets, complimentary railway lounge access, and fuel surcharge waivers. Great for young professionals getting their first card."
+  },
+  {
+    "scheme_id": "ICICI_BANK_EMERALDE_CC",
+    "scheme_name": "ICICI Bank Emeralde Credit Card",
+    "metadata": {
+      "category": "Credit Card",
+      "sub_category": "Super Premium",
+      "risk_level": "None",
+      "target_demographic": "High Net Worth Individuals"
+    },
+    "bm25_keywords": [
+      "emeralde",
+      "super premium",
+      "unlimited lounge",
+      "luxury",
+      "golf",
+      "low markup",
+      "metal card"
+    ],
+    "vector_description": "A super-premium luxury credit card for high-net-worth individuals. Features unlimited global airport lounge access, a highly reduced foreign currency markup fee, and exclusive luxury concierge services."
+  },
+  {
+    "scheme_id": "ICICI_BANK_PLATINUM_CHIP_CC",
+    "scheme_name": "ICICI Bank Platinum Chip Credit Card",
+    "metadata": {
+      "category": "Credit Card",
+      "sub_category": "Basic/Entry Level",
+      "risk_level": "None",
+      "target_demographic": "Beginners"
+    },
+    "bm25_keywords": [
+      "platinum chip",
+      "lifetime free",
+      "ltf",
+      "no annual fee",
+      "first card",
+      "basic"
+    ],
+    "vector_description": "A completely lifetime free, basic credit card with no joining or annual fees. It provides basic reward points on spending and fuel surcharge waivers, making it the perfect hassle-free first credit card."
+  },
+  {
+    "scheme_id": "ICICI_BANK_HPCL_SUPER_SAVER_CC",
+    "scheme_name": "ICICI Bank HPCL Super Saver Credit Card",
+    "metadata": {
+      "category": "Credit Card",
+      "sub_category": "Fuel & Commute",
+      "risk_level": "None",
+      "target_demographic": "Daily Commuters"
+    },
+    "bm25_keywords": [
+      "hpcl",
+      "super saver",
+      "fuel card",
+      "petrol",
+      "diesel",
+      "cashback on fuel",
+      "commuter"
+    ],
+    "vector_description": "A highly rewarding fuel credit card that offers significant cashback and reward points specifically on fuel purchases at HPCL pumps. Essential for individuals who commute heavily by car or two-wheeler."
+  },
+  {
+    "scheme_id": "ICICI_BANK_MMT_SIGNATURE_CC",
+    "scheme_name": "MakeMyTrip ICICI Bank Signature Credit Card",
+    "metadata": {
+      "category": "Credit Card",
+      "sub_category": "Travel",
+      "risk_level": "None",
+      "target_demographic": "Frequent Travelers"
+    },
+    "bm25_keywords": [
+      "makemytrip",
+      "mmt",
+      "signature",
+      "travel card",
+      "flights",
+      "hotels",
+      "holiday",
+      "mmt black"
+    ],
+    "vector_description": "A premium travel co-branded card offering direct MakeMyTrip holiday vouchers and accelerated reward points on hotel and flight bookings. Includes complimentary MMT Black exclusive membership."
+  },
+  {
+    "scheme_id": "ICICI_BANK_ADANI_ONE_SIGNATURE_CC",
+    "scheme_name": "Adani One Signature Credit Card",
+    "metadata": {
+      "category": "Credit Card",
+      "sub_category": "Travel & Airport",
+      "risk_level": "None",
+      "target_demographic": "Airport Frequent Flyers"
+    },
+    "bm25_keywords": [
+      "adani one",
+      "signature",
+      "airport duty free",
+      "pranaam",
+      "meet and greet",
+      "flights"
+    ],
+    "vector_description": "A unique co-branded card offering top-notch airport experiences. Provides heavy discounts on duty-free shopping, free flight cancellations, and complimentary premium 'Pranaam' meet-and-greet services at Adani airports."
+  },
+  {
+    "scheme_id": "ICICI_BANK_MANU_PLATINUM_CC",
+    "scheme_name": "Manchester United Platinum Credit Card",
+    "metadata": {
+      "category": "Credit Card",
+      "sub_category": "Sports/Affinity",
+      "risk_level": "None",
+      "target_demographic": "Football Fans"
+    },
+    "bm25_keywords": [
+      "manchester united",
+      "man utd",
+      "football",
+      "sports card",
+      "merchandise discount"
+    ],
+    "vector_description": "An affinity card designed for football enthusiasts. Offers exclusive discounts on official Manchester United merchandise and top-tier match ticket packages, alongside standard dining and movie benefits."
+  },
+  {
+    "scheme_id": "ICICI_BANK_CAMPUS_POWER",
+    "scheme_name": "ICICI Bank Campus Power Education Loan",
+    "metadata": {
+      "category": "Loan",
+      "sub_category": "Education",
+      "risk_level": "None",
+      "target_demographic": "Students & Parents"
+    },
+    "bm25_keywords": [
+      "education loan",
+      "student loan",
+      "study abroad",
+      "ms in us",
+      "college fees",
+      "campus power",
+      "no collateral"
+    ],
+    "vector_description": "A comprehensive education loan designed for students pursuing higher education in India or abroad. Offers flexible repayment terms, pre-admission sanctions, and options for loans without collateral for premier institutes."
+  },
+  {
+    "scheme_id": "ICICI_BANK_HOME_LOAN",
+    "scheme_name": "ICICI Bank Home Loan",
+    "metadata": {
+      "category": "Loan",
+      "sub_category": "Housing",
+      "risk_level": "None",
+      "target_demographic": "Home Buyers"
+    },
+    "bm25_keywords": [
+      "home loan",
+      "housing loan",
+      "buy flat",
+      "buy house",
+      "mortgage",
+      "interest rate",
+      "home finance"
+    ],
+    "vector_description": "Provides financing for purchasing a new house or flat, or for construction. Features attractive interest rates, online sanctions with minimal documentation, and long repayment tenures up to 20 years."
+  },
+  {
+    "scheme_id": "ICICI_BANK_STEP_UP_HOME_LOAN",
+    "scheme_name": "ICICI Bank Step Up Home Loan",
+    "metadata": {
+      "category": "Loan",
+      "sub_category": "Housing",
+      "risk_level": "None",
+      "target_demographic": "Young Professionals"
+    },
+    "bm25_keywords": [
+      "step up",
+      "home loan",
+      "young earners",
+      "higher eligibility",
+      "lower initial emi"
+    ],
+    "vector_description": "A specialized home loan for young professionals. It offers enhanced loan eligibility and lower initial EMIs that gradually increase as the borrower's salary grows over the years."
+  },
+  {
+    "scheme_id": "ICICI_BANK_CAR_LOAN",
+    "scheme_name": "ICICI Bank Car Loan",
+    "metadata": {
+      "category": "Loan",
+      "sub_category": "Auto",
+      "risk_level": "None",
+      "target_demographic": "Vehicle Buyers"
+    },
+    "bm25_keywords": [
+      "car loan",
+      "auto loan",
+      "vehicle finance",
+      "new car",
+      "buy car",
+      "instant approval"
+    ],
+    "vector_description": "Instant financing for purchasing a new car. Offers up to 100% funding on the on-road price for select models, with minimal documentation and quick digital approvals."
+  },
+  {
+    "scheme_id": "ICICI_BANK_EV_CAR_LOAN",
+    "scheme_name": "ICICI Bank EV Car Loan",
+    "metadata": {
+      "category": "Loan",
+      "sub_category": "Auto",
+      "risk_level": "None",
+      "target_demographic": "Eco-conscious Buyers"
+    },
+    "bm25_keywords": [
+      "ev loan",
+      "electric vehicle",
+      "green loan",
+      "nexon ev",
+      "tesla",
+      "eco friendly"
+    ],
+    "vector_description": "A specialized, discounted auto loan specifically for purchasing Electric Vehicles (EVs). Provides green incentives, lower interest rates, and extended repayment tenures to promote eco-friendly commuting."
+  },
+  {
+    "scheme_id": "ICICI_BANK_TWO_WHEELER_LOAN",
+    "scheme_name": "ICICI Bank Two Wheeler Loan",
+    "metadata": {
+      "category": "Loan",
+      "sub_category": "Auto",
+      "risk_level": "None",
+      "target_demographic": "Daily Commuters"
+    },
+    "bm25_keywords": [
+      "two wheeler",
+      "bike loan",
+      "scooter loan",
+      "motorcycle",
+      "100 percent funding"
+    ],
+    "vector_description": "Quick financing for motorcycles and scooters. Features up to 100% funding of the vehicle cost with instant digital sanctions to get commuters on the road immediately."
+  },
+  {
+    "scheme_id": "ICICI_BANK_PERSONAL_LOAN",
+    "scheme_name": "ICICI Bank Personal Loan",
+    "metadata": {
+      "category": "Loan",
+      "sub_category": "Unsecured",
+      "risk_level": "None",
+      "target_demographic": "General Public"
+    },
+    "bm25_keywords": [
+      "personal loan",
+      "medical emergency",
+      "wedding loan",
+      "travel loan",
+      "no collateral",
+      "instant cash"
+    ],
+    "vector_description": "An unsecured, multi-purpose loan of up to ₹50 lakh. Requires no collateral and offers fast disbursals for medical emergencies, weddings, home renovations, or travel."
+  },
+  {
+    "scheme_id": "ICICI_BANK_FLEXICASH",
+    "scheme_name": "ICICI Bank FlexiCash",
+    "metadata": {
+      "category": "Loan",
+      "sub_category": "Overdraft",
+      "risk_level": "None",
+      "target_demographic": "Salaried Employees"
+    },
+    "bm25_keywords": [
+      "flexicash",
+      "overdraft",
+      "salary advance",
+      "unplanned expense",
+      "short term cash"
+    ],
+    "vector_description": "An instant overdraft facility linked directly to an ICICI salary account. Provides a financial safety net for unplanned expenses, allowing users to borrow short-term cash and pay interest only on the utilized amount."
+  },
+  {
+    "scheme_id": "ICICI_BANK_GOLD_LOAN",
+    "scheme_name": "ICICI Bank Gold Loan",
+    "metadata": {
+      "category": "Loan",
+      "sub_category": "Secured",
+      "risk_level": "None",
+      "target_demographic": "Asset Holders"
+    },
+    "bm25_keywords": [
+      "gold loan",
+      "jewellery loan",
+      "cash against gold",
+      "fast disbursal",
+      "secured loan"
+    ],
+    "vector_description": "A fast, secured loan obtained by pledging gold ornaments. Features minimal paperwork, rapid cash disbursal, and highly transparent valuation and storage policies."
+  },
+  {
+    "scheme_id": "ICICI_BANK_LAP",
+    "scheme_name": "ICICI Bank Loan Against Property (LAP)",
+    "metadata": {
+      "category": "Loan",
+      "sub_category": "Secured",
+      "risk_level": "None",
+      "target_demographic": "Business Owners & High Needs"
+    },
+    "bm25_keywords": [
+      "lap",
+      "loan against property",
+      "mortgage loan",
+      "business expansion",
+      "huge funds"
+    ],
+    "vector_description": "A high-value secured loan where commercial or residential property is mortgaged. Ideal for business expansion, debt consolidation, or funding a child's higher education abroad."
+  },
+  {
+    "scheme_id": "ICICI_BANK_FD",
+    "scheme_name": "ICICI Bank Fixed Deposit (FD)",
+    "metadata": {
+      "category": "Deposit",
+      "sub_category": "Term Deposit",
+      "risk_level": "Very Low",
+      "target_demographic": "Conservative Savers"
+    },
+    "bm25_keywords": [
+      "fd",
+      "fixed deposit",
+      "safe investment",
+      "guaranteed return",
+      "interest rate",
+      "term deposit"
+    ],
+    "vector_description": "A highly secure investment option offering guaranteed returns at fixed interest rates. Flexible tenure options ranging from 7 days to 10 years are available for steady wealth accumulation."
+  },
+  {
+    "scheme_id": "ICICI_BANK_SENIOR_CITIZEN_FD",
+    "scheme_name": "ICICI Bank Senior Citizen Fixed Deposit",
+    "metadata": {
+      "category": "Deposit",
+      "sub_category": "Term Deposit",
+      "risk_level": "Very Low",
+      "target_demographic": "Senior Citizens"
+    },
+    "bm25_keywords": [
+      "senior citizen",
+      "higher interest",
+      "elderly savings",
+      "retirement fd",
+      "safe return"
+    ],
+    "vector_description": "A specialized fixed deposit for individuals over 60 years old. It provides an additional premium interest rate over the standard FD rates to support a secure and higher-yielding retirement income."
+  },
+  {
+    "scheme_id": "ICICI_BANK_TAX_SAVER_FD",
+    "scheme_name": "ICICI Bank Tax Saver Fixed Deposit",
+    "metadata": {
+      "category": "Deposit",
+      "sub_category": "Tax Saving",
+      "risk_level": "Very Low",
+      "target_demographic": "Tax Payers"
+    },
+    "bm25_keywords": [
+      "tax saver fd",
+      "80c",
+      "5 year lock in",
+      "tax deduction",
+      "safe tax saving"
+    ],
+    "vector_description": "A fixed deposit specifically designed for tax deductions under Section 80C. It comes with a mandatory 5-year lock-in period, providing dual benefits of guaranteed interest returns and income tax savings."
+  },
+  {
+    "scheme_id": "ICICI_BANK_RD",
+    "scheme_name": "ICICI Bank Recurring Deposit (RD)",
+    "metadata": {
+      "category": "Deposit",
+      "sub_category": "Term Deposit",
+      "risk_level": "Very Low",
+      "target_demographic": "Salaried Savers"
+    },
+    "bm25_keywords": [
+      "rd",
+      "recurring deposit",
+      "monthly saving",
+      "systematic saving",
+      "fixed return"
+    ],
+    "vector_description": "A systematic saving plan that allows users to deposit a fixed amount every month. It earns interest comparable to an FD, making it perfect for salaried individuals building a corpus over time."
+  },
+  {
+    "scheme_id": "ICICI_BANK_IWISH",
+    "scheme_name": "ICICI Bank iWish Flexible RD",
+    "metadata": {
+      "category": "Deposit",
+      "sub_category": "Flexible Deposit",
+      "risk_level": "Very Low",
+      "target_demographic": "Goal Oriented Savers"
+    },
+    "bm25_keywords": [
+      "iwish",
+      "flexible rd",
+      "goal saving",
+      "save any amount",
+      "no penalty",
+      "wishlist"
+    ],
+    "vector_description": "A highly flexible recurring deposit that lets users set specific life goals (like a vacation or a gadget). Users can deposit varying amounts whenever they have spare cash without any missed payment penalties."
+  },
+  {
+    "scheme_id": "ICICI_BANK_FCNR",
+    "scheme_name": "ICICI Bank Foreign Currency Non-Resident (FCNR) Deposit",
+    "metadata": {
+      "category": "Deposit",
+      "sub_category": "NRI Services",
+      "risk_level": "Low",
+      "target_demographic": "Non-Resident Indians"
+    },
+    "bm25_keywords": [
+      "fcnr",
+      "nri deposit",
+      "foreign currency",
+      "usd gbp eur",
+      "tax free india",
+      "repatriable"
+    ],
+    "vector_description": "A specialized term deposit for NRIs to maintain funds in foreign currencies (USD, GBP, EUR, etc.) protecting them from exchange rate fluctuations. The principal and interest are fully repatriable and tax-free in India."
+  },
+  {
+    "scheme_id": "ICICI_BANK_NRE_FD",
+    "scheme_name": "ICICI Bank NRE Fixed Deposit",
+    "metadata": {
+      "category": "Deposit",
+      "sub_category": "NRI Services",
+      "risk_level": "Very Low",
+      "target_demographic": "Non-Resident Indians"
+    },
+    "bm25_keywords": [
+      "nre fd",
+      "nri investment",
+      "rupee fd",
+      "tax free interest",
+      "convert foreign money"
+    ],
+    "vector_description": "An Indian Rupee denominated fixed deposit for NRIs. Income earned on this deposit is entirely exempt from Indian income tax, providing a high-yield, safe parking spot for foreign earnings."
+  },
+  {
+    "scheme_id": "ICICI_BANK_BSBDA",
+    "scheme_name": "Basic Savings Bank Deposit Account (BSBDA)",
+    "metadata": {
+      "category": "Account",
+      "sub_category": "Savings",
+      "risk_level": "None",
+      "target_demographic": "Low Income Earners"
+    },
+    "bm25_keywords": [
+      "bsbda",
+      "zero balance",
+      "jan dhan",
+      "free account",
+      "basic banking",
+      "no minimum balance"
+    ],
+    "vector_description": "A zero-balance savings account designed to provide basic banking facilities to everyone. Features no minimum balance requirement and free basic cash deposit/withdrawal services."
+  },
+  {
+    "scheme_id": "ICICI_BANK_ADVANTAGE_WOMAN",
+    "scheme_name": "ICICI Bank Advantage Woman Savings Account",
+    "metadata": {
+      "category": "Account",
+      "sub_category": "Savings",
+      "risk_level": "None",
+      "target_demographic": "Women Professionals"
+    },
+    "bm25_keywords": [
+      "woman savings",
+      "female account",
+      "cashback for women",
+      "locker discount",
+      "independent women"
+    ],
+    "vector_description": "A specialized savings account exclusively for women. Offers unique benefits like cashback on debit card spends, discounts on locker rentals, and comprehensive lifestyle privileges."
+  },
+  {
+    "scheme_id": "ICICI_BANK_SMART_STAR",
+    "scheme_name": "ICICI Bank Smart Star Savings Account",
+    "metadata": {
+      "category": "Account",
+      "sub_category": "Kids Savings",
+      "risk_level": "None",
+      "target_demographic": "Minors & Children"
+    },
+    "bm25_keywords": [
+      "smart star",
+      "kids account",
+      "minor savings",
+      "child account",
+      "financial literacy"
+    ],
+    "vector_description": "A savings account designed specifically for minors aged 10-18 to operate independently. Features specialized debit cards with spend limits to help children learn financial independence safely."
+  }
+]

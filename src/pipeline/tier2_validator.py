@@ -17,6 +17,7 @@ Score <  85: Complaint, news, joke, rant → Drop to protect brand
 """
 
 import json
+import re
 import asyncio
 from typing import Dict, Any, List, Optional
 
@@ -167,44 +168,81 @@ class Tier2Validator:
 
     def _parse_response(self, raw_text: str) -> Dict[str, Any]:
         """
-        Parse the LLM's JSON response, handling common edge cases:
-        - Markdown code fences wrapping the JSON
-        - Extra whitespace or newlines
-        - Malformed responses (returns a safe default)
+        Parse the LLM's JSON response with multiple fallback strategies:
+
+        1. Direct JSON parse (fastest, handles clean responses)
+        2. Strip markdown code fences and retry
+        3. Regex extract first {...} block from noisy text
+        4. Last-resort regex to find a bare "score": <int> in the text
+
+        Returns a dict with 'score' (int 0-100) and 'reasoning' (str).
+        On total failure, returns score=0 (safe drop).
         """
         text = raw_text.strip()
 
-        # Strip markdown code fences if present
-        if text.startswith("```"):
-            # Remove opening fence (```json or ```)
-            first_newline = text.index("\n")
-            text = text[first_newline + 1:]
-            # Remove closing fence
-            if text.endswith("```"):
-                text = text[:-3]
-            text = text.strip()
+        # ── Strategy 1: Direct JSON parse ────────────────────────
+        parsed = self._try_json_parse(text)
+        if parsed:
+            return parsed
 
+        # ── Strategy 2: Strip markdown code fences ───────────────
+        cleaned = text
+        if cleaned.startswith("```"):
+            try:
+                first_newline = cleaned.index("\n")
+                cleaned = cleaned[first_newline + 1:]
+            except ValueError:
+                cleaned = cleaned[3:]
+            if cleaned.endswith("```"):
+                cleaned = cleaned[:-3]
+            cleaned = cleaned.strip()
+
+            parsed = self._try_json_parse(cleaned)
+            if parsed:
+                return parsed
+
+        # ── Strategy 3: Regex extract first JSON object {...} ────
+        json_match = re.search(r'\{[^{}]*"score"\s*:\s*\d+[^{}]*\}', text, re.DOTALL)
+        if json_match:
+            parsed = self._try_json_parse(json_match.group())
+            if parsed:
+                return parsed
+
+        # ── Strategy 4: Last-resort — find bare score integer ────
+        score_match = re.search(r'"score"\s*:\s*(\d+)', text)
+        if score_match:
+            score = int(score_match.group(1))
+            score = max(0, min(100, score))
+            # Try to grab reasoning too
+            reason_match = re.search(r'"reasoning"\s*:\s*"([^"]*)', text)
+            reasoning = reason_match.group(1) if reason_match else "Extracted via fallback regex"
+            logger.warning(
+                "response_parsed_via_regex_fallback",
+                score=score,
+                raw_text=raw_text[:200],
+            )
+            return {"score": score, "reasoning": reasoning}
+
+        # ── Total failure ────────────────────────────────────────
+        logger.warning(
+            "response_parse_failed",
+            raw_text=raw_text[:200],
+        )
+        return {
+            "score": 0,
+            "reasoning": "Failed to parse LLM response (no valid JSON found)",
+        }
+
+    def _try_json_parse(self, text: str) -> Optional[Dict[str, Any]]:
+        """Attempt to parse text as JSON and extract score/reasoning. Returns None on failure."""
         try:
             parsed = json.loads(text)
             score = int(parsed.get("score", 0))
             reasoning = str(parsed.get("reasoning", "No reasoning provided"))
-
-            # Clamp score to valid range
             score = max(0, min(100, score))
-
             return {"score": score, "reasoning": reasoning}
-
-        except (json.JSONDecodeError, ValueError, TypeError) as e:
-            logger.warning(
-                "response_parse_failed",
-                raw_text=raw_text[:200],
-                error=str(e),
-            )
-            # Safe default: treat unparseable responses as noise (drop the post)
-            return {
-                "score": 0,
-                "reasoning": f"Failed to parse LLM response: {str(e)[:100]}",
-            }
+        except (json.JSONDecodeError, ValueError, TypeError, AttributeError):
+            return None
 
     async def validate_intent(self, post: Dict[str, Any]) -> Dict[str, Any]:
         """
