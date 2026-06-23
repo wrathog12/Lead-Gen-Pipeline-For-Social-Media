@@ -25,16 +25,21 @@ X_SEARCH_URL = "https://api.x.com/2/tweets/search/recent"
 
 # ── Single consolidated search query ─────────────────────────────
 # One query to minimize paid reads. Covers key Indian finance topics.
+# Two-group structure: (financial terms) AND (India geo terms)
+# ensures every result is India-relevant.
 # -is:retweet avoids duplicates, lang:en focuses on English tweets.
 DEFAULT_QUERY = (
-    '("mutual fund" OR "SIP" OR "home loan" OR "personal loan" '
+    '("mutual fund" OR SIP OR "home loan" OR "personal loan" '
     'OR "credit card" OR "fixed deposit" OR "tax saving" '
-    'OR "NPS" OR "ELSS" OR "health insurance" OR "term insurance") '
-    "lang:en -is:retweet"
+    'OR NPS OR ELSS OR PPF OR "health insurance" OR "term insurance" '
+    'OR "savings account" OR "demat account" OR ITR) '
+    '(India OR Indian OR lakh OR crore OR rupee OR ICICI OR HDFC '
+    'OR Zerodha OR Groww OR Nifty OR Sensex) '
+    'lang:en -is:retweet'
 )
 
 # ── Fetch limit ──────────────────────────────────────────────────
-DEFAULT_MAX_RESULTS = 30  # Costs 30 × $0.005 = $0.15 per run
+DEFAULT_MAX_RESULTS = 100  # Costs 100 × $0.005 = $0.50 per run
 
 
 class XIngester(BaseIngester):

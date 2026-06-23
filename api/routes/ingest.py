@@ -54,6 +54,14 @@ RATE_LIMITS = {
     "quora": 5.0,      # Playwright scraping — be very respectful
 }
 
+# ── Per-platform fetch limits ────────────────────────────────────
+PLATFORM_LIMITS = {
+    "reddit": 50,
+    "youtube": 50,
+    "x": 100,       # More tweets to maximize paid credits
+    "quora": 30,
+}
+
 # ── Track running pipelines ──────────────────────────────────────
 _running_pipelines: Dict[str, bool] = {}
 
@@ -160,7 +168,7 @@ async def _run_pipeline_for_platform(platform: str):
         rate_delay = RATE_LIMITS.get(platform, 1.0)
 
         try:
-            raw_posts = await ingester.fetch_posts(limit=25)
+            raw_posts = await ingester.fetch_posts(limit=PLATFORM_LIMITS.get(platform, 25))
         except Exception as e:
             logger.error("fetch_failed", platform=platform, error=str(e))
             run.status = "failed"
@@ -247,6 +255,10 @@ async def _run_pipeline_for_platform(platform: str):
             tier2_results = await _tier2.validate_batch(tier2_posts)
 
             # ── Step 4: RAG + Generation for passing posts ───────
+
+            # 4a. Update all Tier-2 scores in DB and collect passing posts
+            generation_inputs = []  # list of (db_post, post_data, score)
+
             for (db_post, post_data), result in zip(tier2_batch, tier2_results):
                 score = result.get("score", 0)
                 passes = result.get("passes", False)
@@ -265,60 +277,89 @@ async def _run_pipeline_for_platform(platform: str):
                     continue
 
                 posts_filtered += 1
+                generation_inputs.append((db_post, post_data, score))
 
-                # ── RAG: Find best matching scheme ───────────────
-                try:
-                    schemes = _rag.search(post_data.get("text", ""), top_k=1)
-                    if not schemes:
-                        logger.warning("no_scheme_match", post_id=db_post.post_id)
-                        continue
-                    best_scheme = schemes[0]
-                except Exception as e:
-                    logger.error(
-                        "rag_search_failed",
-                        post_id=db_post.post_id,
-                        error=str(e),
-                    )
-                    continue
-
-                # ── Generate comment ─────────────────────────────
-                try:
-                    draft_text = await _generator.generate_response(
-                        post=post_data,
-                        scheme=best_scheme,
-                        platform=platform,
-                    )
-                except Exception as e:
-                    logger.error(
-                        "generation_failed",
-                        post_id=db_post.post_id,
-                        error=str(e),
-                    )
-                    continue
-
-                if not draft_text:
-                    logger.info("generation_skipped", post_id=db_post.post_id)
-                    continue
-
-                # ── Save draft to DB ─────────────────────────────
-                draft = DraftComment(
-                    post_id=db_post.id,
-                    matched_scheme=best_scheme.get("scheme_name", ""),
-                    intent_score=score,
-                    scheme_relevance=best_scheme.get("relevance_score", 0.0),
-                    draft_text=draft_text,
-                    status="pending",
-                )
-                db.add(draft)
-                db.commit()
-
-                drafts_generated += 1
+            # 4b. Run RAG search + LLM generation concurrently
+            #     Semaphore limits parallel Gemini API calls to avoid
+            #     transient rate-limit errors on pay-as-you-go.
+            if generation_inputs:
                 logger.info(
-                    "draft_saved",
-                    post_id=db_post.post_id,
-                    scheme=best_scheme.get("scheme_name", ""),
-                    draft_preview=draft_text[:60],
+                    "generation_batch_start",
+                    count=len(generation_inputs),
                 )
+                gen_semaphore = asyncio.Semaphore(5)
+
+                async def _rag_and_generate(db_post, post_data, score):
+                    """Single RAG + generation task (runs under semaphore)."""
+                    async with gen_semaphore:
+                        # RAG: Find best matching scheme
+                        try:
+                            schemes = _rag.search(post_data.get("text", ""), top_k=1)
+                            if not schemes:
+                                logger.warning("no_scheme_match", post_id=db_post.post_id)
+                                return None
+                            best_scheme = schemes[0]
+                        except Exception as e:
+                            logger.error(
+                                "rag_search_failed",
+                                post_id=db_post.post_id,
+                                error=str(e),
+                            )
+                            return None
+
+                        # Generate comment via Gemini
+                        try:
+                            draft_text = await _generator.generate_response(
+                                post=post_data,
+                                scheme=best_scheme,
+                                platform=platform,
+                            )
+                        except Exception as e:
+                            logger.error(
+                                "generation_failed",
+                                post_id=db_post.post_id,
+                                error=str(e),
+                            )
+                            return None
+
+                        if not draft_text:
+                            logger.info("generation_skipped", post_id=db_post.post_id)
+                            return None
+
+                        return (db_post, best_scheme, score, draft_text)
+
+                # Fire all generation tasks concurrently
+                tasks = [
+                    _rag_and_generate(db_post, post_data, score)
+                    for db_post, post_data, score in generation_inputs
+                ]
+                gen_results = await asyncio.gather(*tasks)
+
+                # 4c. Save generated drafts to DB (sequential — safe for SQLite)
+                for result in gen_results:
+                    if result is None:
+                        continue
+
+                    db_post, best_scheme, score, draft_text = result
+
+                    draft = DraftComment(
+                        post_id=db_post.id,
+                        matched_scheme=best_scheme.get("scheme_name", ""),
+                        intent_score=score,
+                        scheme_relevance=best_scheme.get("relevance_score", 0.0),
+                        draft_text=draft_text,
+                        status="pending",
+                    )
+                    db.add(draft)
+                    db.commit()
+
+                    drafts_generated += 1
+                    logger.info(
+                        "draft_saved",
+                        post_id=db_post.post_id,
+                        scheme=best_scheme.get("scheme_name", ""),
+                        draft_preview=draft_text[:60],
+                    )
 
         # ── Update pipeline run metrics ──────────────────────────
         run.posts_fetched = posts_fetched

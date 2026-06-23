@@ -254,19 +254,41 @@ class QuoraIngester(BaseIngester):
         Fetch Quora questions by visiting seed URLs and discovering
         related questions from each page.
 
-        Launches a Playwright browser, visits each seed, extracts
-        related questions, normalizes, and returns.
+        Playwright cannot run directly on uvicorn's ProactorEventLoop
+        on Windows. We delegate the entire browser operation to a
+        separate thread via run_in_executor, where a fresh event loop
+        is created. This mirrors the standalone fetch_posts_sync()
+        behaviour which works reliably.
         """
-        import sys
+        loop = asyncio.get_event_loop()
+        return await loop.run_in_executor(
+            None, self._do_playwright_scrape, limit,
+        )
 
-        # ── Windows fix: Playwright needs SelectorEventLoop ──────
-        # The default ProactorEventLoop on Windows doesn't support
-        # subprocess transport, causing NotImplementedError when
-        # Playwright tries to launch Chromium. Switch policy before
-        # Playwright starts.
-        if sys.platform == "win32":
-            asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
+    # ── Thread-safe Playwright execution ─────────────────────────
 
+    def _do_playwright_scrape(self, limit: int) -> List[Dict[str, Any]]:
+        """
+        Run the Playwright scraping in a fresh event loop (thread-safe).
+
+        Called from run_in_executor — this method runs in a thread-pool
+        thread that has no running event loop, so asyncio.run() works.
+        The default ProactorEventLoop on Windows supports the subprocess
+        calls that Playwright needs to launch Chromium.
+        """
+        try:
+            return asyncio.run(self._scrape_all_seeds(limit=limit))
+        except Exception as e:
+            logger.error("playwright_thread_failed", error=str(e))
+            return []
+
+    async def _scrape_all_seeds(self, limit: int) -> List[Dict[str, Any]]:
+        """
+        Actual Playwright scraping coroutine.
+
+        Launches a headless Chromium browser, visits each seed URL,
+        extracts related questions, normalizes, and returns.
+        """
         from playwright.async_api import async_playwright
 
         all_questions: List[Dict[str, Any]] = []
@@ -326,5 +348,6 @@ class QuoraIngester(BaseIngester):
         query: Optional[str] = None,
         limit: int = 30,
     ) -> List[Dict[str, Any]]:
-        """Synchronous wrapper for fetch_posts."""
-        return asyncio.run(self.fetch_posts(query=query, limit=limit))
+        """Synchronous wrapper — delegates to the thread-safe scraper."""
+        return self._do_playwright_scrape(limit=limit)
+
