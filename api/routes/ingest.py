@@ -58,7 +58,7 @@ RATE_LIMITS = {
 PLATFORM_LIMITS = {
     "reddit": 50,
     "youtube": 50,
-    "x": 100,       # More tweets to maximize paid credits
+    "x": 60,       # More tweets to maximize paid credits
     "quora": 30,
 }
 
