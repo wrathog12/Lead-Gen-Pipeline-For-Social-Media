@@ -1,6 +1,6 @@
 # 🚀 Lead-Gen Pipeline for Social Media (HITL)
 
-An autonomous social media listening, intent validation, and grounded response generation pipeline. The system monitors popular platforms (Reddit, YouTube, X, and Quora), processes ingested posts through a rigorous filtering and validation system, matches leads to relevant banking products using RAG, and generates human-like response drafts. Everything is managed via a visual **Human-in-the-Loop (HITL) Admin Dashboard** where drafts can be reviewed, edited, approved, and automatically posted.
+An autonomous social media listening, intent validation, and grounded response generation pipeline. The system monitors popular platforms (Reddit, YouTube, X, and Quora), processes ingested posts through a rigorous filtering and validation system, matches leads to relevant banking products using RAG, and generates human-like response drafts. Everything is managed via a visual **Human-in-the-Loop (HITL) Admin Dashboard** where drafts can be reviewed, edited, approved, and automatically posted. Update : Critical change has been done in reddit API, existing code might suffer or get stucked.
 
 ---
 
