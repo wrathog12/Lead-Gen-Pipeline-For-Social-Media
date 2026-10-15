@@ -6,7 +6,7 @@ An autonomous social media listening, intent validation, and grounded response g
 
 ## 🗺️ Architectural Flow
 
-The diagram below details the entire data lifecycle, from dynamic ingestion spokes through pipeline filtering, RAG retrieval, LLM validation, human approval, and final throttled posting execution.
+The diagram below details the entire data lifecycle, from dynamic ingestion spokes through pipeline filtering, RAG retrieval, LLM validation, human approval, and final throttled posting execution... version has been updated check for updates
 
 ```mermaid
 graph TD
